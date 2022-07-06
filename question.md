@@ -1,0 +1,10 @@
+## node.js mysql can not connect
+
+```shell
+mysql -u root -p
+
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '123456';
+
+
+FLUSH PRIVILEGES;
+```
