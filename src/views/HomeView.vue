@@ -2,6 +2,7 @@
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
 import { ref } from "vue";
 import UploadFile from "../components/UploadFile.vue";
+import SettingsInfo from "../components/SettingsInfo.vue";
 const categories = ref({
   UploadFile: [
     {
@@ -39,7 +40,7 @@ const categories = ref({
 </script>
 
 <template>
-  <main class="w-full max-w-[800px] px-2 py-8 sm:px-0">
+  <main class="w-full max-w-[800px] fixed top-20 left-0 right-0 m-auto">
     <TabGroup>
       <TabList class="flex space-x-1 rounded-xl bg-blue-900/20 p-1">
         <Tab
@@ -54,7 +55,7 @@ const categories = ref({
               'ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
               selected
                 ? 'bg-white shadow'
-                : 'text-blue-100 hover:bg-white/[0.12] hover:text-white',
+                : 'text-gray-800 hover:bg-white/[0.12] hover:text-white',
             ]"
           >
             {{ category }}
@@ -65,7 +66,7 @@ const categories = ref({
         <TabPanel
           :class="[
             'rounded-xl bg-white p-3',
-            'ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
+            'ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none ring-2',
           ]"
         >
           <UploadFile />
@@ -73,10 +74,10 @@ const categories = ref({
         <TabPanel
           :class="[
             'rounded-xl bg-white p-3',
-            'ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
+            'ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none ring-2',
           ]"
         >
-          2
+          <SettingsInfo />
         </TabPanel>
       </TabPanels>
     </TabGroup>

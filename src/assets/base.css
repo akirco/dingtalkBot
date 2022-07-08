@@ -49,3 +49,14 @@ nav a {
   padding: 0 20px 0 20px;
   margin: 0 20px 0 20px;
 }
+
+nav span {
+  padding: 0 20px 0 20px;
+  margin: 0 20px 0 20px;
+}
+
+@media screen and (max-width: 768px) {
+  #right-nav {
+    display: none;
+  }
+}

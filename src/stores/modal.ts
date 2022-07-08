@@ -12,8 +12,5 @@ export const useModalStore = defineStore({
     openModal() {
       this.isOpen = true;
     },
-    closeModal() {
-      this.isOpen = false;
-    },
   },
 });
