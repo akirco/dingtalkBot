@@ -9,6 +9,7 @@ import {
 } from "@headlessui/vue";
 import { XIcon } from "@heroicons/vue/outline";
 import { storeToRefs } from "pinia";
+import LoginForm from "./LoginForm.vue";
 const useLogIn = useLogInfoStore();
 const { login } = storeToRefs(useLogIn);
 const open = login;
@@ -81,11 +82,12 @@ const open = login;
                   <div class="relative mt-6 flex-1 px-4 sm:px-6">
                     <!-- Replace with your content -->
                     <div class="absolute inset-0 px-4 sm:px-6">
-                      <!-- <div
+                      <div
                         class="h-full border-2 border-dashed border-gray-200"
                         aria-hidden="true"
-                      /> -->
-                      <h1>这是测试内容</h1>
+                      >
+                      <LoginForm />
+                      </div>
                     </div>
                     <!-- /End replace -->
                   </div>
