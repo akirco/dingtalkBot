@@ -1,11 +1,14 @@
 class config {
   constructor() {
     this.mysql = {
-      host: "localhost",
+      host: 'localhost',
       port: 3306,
-      user: "root",
-      password: "123456",
-      database: "dingTalkBot",
+      user: 'root',
+      password: '',
+      database: 'dingTalkBot',
+    };
+    this.app = {
+      port: 4000,
     };
   }
 }
