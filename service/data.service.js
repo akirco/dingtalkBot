@@ -1,4 +1,4 @@
-﻿const excuteSql = require('../utils/sql');
+﻿const { excuteSql } = require('../utils/sql');
 class dataService {
   async d_select(ctx, next) {
     try {
