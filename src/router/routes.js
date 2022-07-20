@@ -1,15 +1,15 @@
 ﻿const prefix = '/api';
 module.exports = {
-  selectRoute: (path) => {
+  sel: (path) => {
     return `${prefix}/${path}/query`;
   },
-  insertRoute: (path) => {
+  ins: (path) => {
     return `${prefix}/${path}/insert`;
   },
-  updateRoute: (path) => {
+  upd: (path) => {
     return `${prefix}/${path}/update`;
   },
-  delRoute: (path) => {
-    return `${prefix}/${path}/del`;
+  del: (path) => {
+    return `${prefix}/${path}/delete`;
   },
 };

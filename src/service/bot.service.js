@@ -1,25 +1,11 @@
 ﻿const { excuteSql } = require('../utils/sql');
 
 class botService {
-  async botSelectAll(ctx, next) {
-    try {
-      const result = await excuteSql(`SELECT * FROM t_sender`);
-      ctx.body = {
-        msg: 'select success',
-        data: result,
-        code: 200,
-      };
-    } catch (error) {
-      ctx.body = {
-        msg: 'select error',
-        data: error.sqlMessage || null,
-        code: 500,
-      };
-    }
-  }
   async botSelectByUid(ctx, next) {
     try {
-      const result = await excuteSql(`SELECT * FROM t_sender`);
+      let _sql = `select botId,baseUrl,accessToken,secret from bot where uid = ?`;
+      let _values = [ctx.request.body.uid]
+      const result = await excuteSql(_sql,_values);
       ctx.body = {
         msg: 'select success',
         data: result,

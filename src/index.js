@@ -2,13 +2,13 @@ const Koa = require('koa');
 const Router = require('koa-router');
 const bodyParser = require('koa-bodyparser');
 const cors = require('koa2-cors');
-const config = require('./config');
+const {APP_PORT} = require('./config/default');
 const app = new Koa();
 const router = new Router();
-const port = config.app.port;
+
 //data service
 const {
-  s_select,
+  botSelectByUid,
   s_insert,
   s_update,
   s_del,
@@ -27,10 +27,10 @@ const {
 } = require('./service/jobs.service');
 
 const {
-  selectRoute,
-  insertRoute,
-  delRoute,
-  updateRoute,
+  sel,
+  ins,
+  del,
+  upd,
 } = require('./router/routes');
 
 // 跨域设置
@@ -39,28 +39,35 @@ app.use(bodyParser());
 app.use(router.routes());
 app.use(router.allowedMethods());
 
+
+// ! home page
 router.get('/', async (ctx) => {
   ctx.body = 'Hello World';
 });
 
-router
-  .get(selectRoute('sender'), s_select)
-  .post(insertRoute('sender'), s_insert)
-  .put(updateRoute('sender'), s_update)
-  .delete(delRoute('sender'), s_del);
 
-router
-  .get(selectRoute('user'), u_select)
-  .post(insertRoute('user'), u_insert)
-  .put(updateRoute('user'), u_update)
-  .delete(delRoute('user'), u_del);
+// todo user router
+// router
+//   .get(sel('sender'), s_select)
+//   .post(ins('sender'), s_insert)
+//   .put(upd('sender'), s_update)
+//   .delete(del('sender'), s_del);
 
+// todo bot router
 router
-  .get(selectRoute('data'), d_select)
-  .post(insertRoute('data'), d_insert)
-  .put(updateRoute('data'), d_update)
-  .delete(delRoute('data'), d_del);
+  .post(sel('bot'), botSelectByUid);
+//   .post(ins('user'), u_insert)
+//   .put(upd('user'), u_update)
+//   .delete(del('user'), u_del);
+
+
+// todo jobs router
+// router
+//   .get(sel('data'), d_select)
+//   .post(ins('data'), d_insert)
+//   .put(upd('data'), d_update)
+//   .delete(del('data'), d_del);
 
 //listen port
-app.listen(port);
-console.log(`Server listening on port ${port}`);
+app.listen(APP_PORT);
+console.log(`APP is running on http://localhost:${APP_PORT}`);

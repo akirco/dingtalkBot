@@ -4,8 +4,8 @@
   "description": "a web app server with koa",
   "main": "index.js",
   "scripts": {
-    "dev": "kill-port 4000 && nodemon index.js",
-    "start": "node ./tasks/main.js"
+    "dev": "kill-port 4000 && nodemon ./src/index.js",
+    "task": "node ./src/tasks/main.js"
   },
   "keywords": [
     "koa",
@@ -15,6 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "dingtalk-robot-sender": "^1.2.0",
+    "dotenv": "^16.0.1",
     "kill-port": "^2.0.1",
     "koa": "^2.13.4",
     "koa-bodyparser": "^4.3.0",

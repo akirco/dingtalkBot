@@ -1,5 +1,5 @@
 const pool = require('./pool');
-const connection = require('./connection');
+const connection = require('./conn');
 function excuteSql(sql, values) {
   return new Promise((resolve, reject) => {
     pool.getConnection((err, connection) => {
