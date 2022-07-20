@@ -1,9 +1,8 @@
 ﻿const { excuteSql } = require('../utils/sql');
-
-class senderService {
-  async s_select(ctx, next) {
+class jobService {
+  async jobSelectByBotId(ctx, next) {
     try {
-      const result = await excuteSql(`SELECT * FROM t_sender`);
+      const result = await excuteSql(`SELECT * FROM t_data`);
       ctx.body = {
         msg: 'select success',
         data: result,
@@ -17,10 +16,15 @@ class senderService {
       };
     }
   }
-  async s_insert(ctx, next) {
+  async jobInsertByBotId(ctx, next) {
     try {
-      let _sql = 'INSERT INTO t_sender( secret, webhook) VALUES ( ?, ?)';
-      let _values = [ctx.request.body.secret, ctx.request.body.webhook];
+      let _sql = 'INSERT INTO t_data( img1,img2,img3,txt) VALUES ( ?, ?,?, ?)';
+      let _values = [
+        ctx.request.body.img1,
+        ctx.request.body.img2,
+        ctx.request.body.img3,
+        ctx.request.body.txt,
+      ];
       const result = await excuteSql(_sql, _values);
       ctx.body = {
         msg: 'insert success',
@@ -35,12 +39,14 @@ class senderService {
       };
     }
   }
-  async s_update(ctx, next) {
+  async jobUpdateByBotId(ctx, next) {
     try {
-      let _sql = 'UPDATE t_sender SET secret=?, webhook=? WHERE id=?';
+      let _sql = 'UPDATE t_data SET img1=?, img2=?, img3=?, txt=? WHERE id=?';
       let _values = [
-        ctx.request.body.secret,
-        ctx.request.body.webhook,
+        ctx.request.body.img1,
+        ctx.request.body.img2,
+        ctx.request.body.img3,
+        ctx.request.body.txt,
         ctx.request.body.id,
       ];
       const result = await excuteSql(_sql, _values);
@@ -57,23 +63,23 @@ class senderService {
       };
     }
   }
-  async s_del(ctx, next) {
+  async jobDeleteByBotId(ctx, next) {
     try {
-      let _sql = 'DELETE FROM t_sender WHERE id=?';
-      let _values = [ctx.params.id];
+      let _sql = 'DELETE FROM t_data WHERE id=?';
+      let _values = [ctx.request.body.id];
       const result = await excuteSql(_sql, _values);
       ctx.body = {
-        msg: 'delete success',
+        msg: 'del success',
         data: result.id,
         code: 200,
       };
     } catch (error) {
       ctx.body = {
-        msg: 'delete error',
+        msg: 'del error',
         data: error.sqlMessage || null,
         code: 500,
       };
     }
   }
 }
-module.exports = new senderService();
+module.exports = new jobService();

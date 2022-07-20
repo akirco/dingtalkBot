@@ -12,7 +12,7 @@ const {
   s_insert,
   s_update,
   s_del,
-} = require('./service/sender.service');
+} = require('./service/bot.service');
 const {
   u_select,
   u_insert,
@@ -24,7 +24,7 @@ const {
   d_insert,
   d_update,
   d_del,
-} = require('./service/data.service');
+} = require('./service/jobs.service');
 
 const {
   selectRoute,

@@ -20,8 +20,7 @@ function excuteSql(sql, values) {
 }
 
 function excuteSqlConn(sql, values) {
-  let storage;
-  let p =Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     connection.connect();
     connection.query(sql, values, (err, rows) => {
       if (err) {
@@ -30,12 +29,8 @@ function excuteSqlConn(sql, values) {
         resolve(rows);
       }
     });
-    p.then(values => {
-      storage = values;
-    })
     connection.end();
   });
-  return storage;
 }
 
 module.exports = {

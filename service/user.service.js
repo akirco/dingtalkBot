@@ -1,6 +1,6 @@
 ﻿const { excuteSql } = require('../utils/sql');
 class userService {
-  async u_select(ctx, next) {
+  async userSelectByUid(ctx, next) {
     try {
       const result = await excuteSql(`SELECT * FROM t_admin`);
       ctx.body = {
@@ -16,7 +16,7 @@ class userService {
       };
     }
   }
-  async u_insert(ctx, next) {
+  async userInsert(ctx, next) {
     try {
       let _sql = 'INSERT INTO t_admin( uname, pwd) VALUES ( ?, ?)';
       let _values = [ctx.request.body.uname, ctx.request.body.pwd];
@@ -34,7 +34,7 @@ class userService {
       };
     }
   }
-  async u_update(ctx, next) {
+  async userUpdateByUid(ctx, next) {
     try {
       let _sql = 'UPDATE t_admin SET uname=?, pwd=? WHERE id=?';
       let _values = [
@@ -56,7 +56,7 @@ class userService {
       };
     }
   }
-  async u_del(ctx, next) {
+  async userDelectByUid(ctx, next) {
     try {
       let _sql = 'DELETE FROM t_admin WHERE id=?';
       let _values = [ctx.request.body.id];
