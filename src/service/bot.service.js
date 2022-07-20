@@ -22,7 +22,7 @@ class botService {
 
   async botInsertByUid(ctx, next) {
     try {
-      let _sql = 'INSERT INTO t_sender( secret, webhook) VALUES ( ?, ?)';
+      let _sql = 'INSERT INTO bot( secret, webhook) VALUES ( ?, ?)';
       let _values = [ctx.request.body.secret, ctx.request.body.webhook];
       const result = await excuteSql(_sql, _values);
       ctx.body = {

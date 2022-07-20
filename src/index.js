@@ -34,8 +34,8 @@ const {
 } = require('./router/routes');
 
 // 跨域设置
-app.use(cors());
 app.use(bodyParser());
+app.use(cors());
 app.use(router.routes());
 app.use(router.allowedMethods());
 
