@@ -1,8 +1,11 @@
 ﻿const { excuteSql } = require('../utils/sql');
+const jsonFormate = require('../utils/jsonFormate');
 class userService {
   async userSelectByUid(ctx, next) {
     try {
-      const result = await excuteSql(`SELECT * FROM t_admin`);
+      let _sql = `select * from user where uid = ?`;
+      let _values = [ctx.request.query.uid];
+      const result = await excuteSql(_sql,_values);
       ctx.body = {
         msg: 'select success',
         data: result,
@@ -18,12 +21,12 @@ class userService {
   }
   async userInsert(ctx, next) {
     try {
-      let _sql = 'INSERT INTO t_admin( uname, pwd) VALUES ( ?, ?)';
+      let _sql = 'insert into user(uname, pwd) values ( ?, ?)';
       let _values = [ctx.request.body.uname, ctx.request.body.pwd];
       const result = await excuteSql(_sql, _values);
       ctx.body = {
         msg: 'insert success',
-        data: result.id,
+        data: result,
         code: 200,
       };
     } catch (error) {
@@ -36,16 +39,16 @@ class userService {
   }
   async userUpdateByUid(ctx, next) {
     try {
-      let _sql = 'UPDATE t_admin SET uname=?, pwd=? WHERE id=?';
+      let _sql = 'update user set uname=?, pwd=? WHERE uid=?';
       let _values = [
         ctx.request.body.uname,
         ctx.request.body.pwd,
-        ctx.request.body.id,
+        ctx.request.body.uid,
       ];
       const result = await excuteSql(_sql, _values);
       ctx.body = {
         msg: 'update success',
-        data: result.id,
+        data: result,
         code: 200,
       };
     } catch (error) {
@@ -56,14 +59,15 @@ class userService {
       };
     }
   }
-  async userDelectByUid(ctx, next) {
+  async userDeleteByUid(ctx, next) {
     try {
-      let _sql = 'DELETE FROM t_admin WHERE id=?';
-      let _values = [ctx.request.body.id];
-      const result = await excuteSql(_sql, _values);
+      let _sql = 'delete from user where uid=?';
+      let _values = [ctx.params.id];
+      let result = await excuteSql(_sql, _values);
+      result = jsonFormate(result);
       ctx.body = {
         msg: 'del success',
-        data: result.id,
+        data: `影响行数为:${result}条`,
         code: 200,
       };
     } catch (error) {

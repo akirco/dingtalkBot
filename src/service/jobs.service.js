@@ -1,8 +1,11 @@
 ﻿const { excuteSql } = require('../utils/sql');
+const jsonFormate = require("../utils/jsonFormate");
 class jobService {
   async jobSelectByBotId(ctx, next) {
     try {
-      const result = await excuteSql(`SELECT * FROM t_data`);
+      let _sql =  `select * from jobs where botId = ?`;
+      let _values = [ctx.request.query.uid]
+      const result = await excuteSql(_sql,_values);
       ctx.body = {
         msg: 'select success',
         data: result,
@@ -16,14 +19,15 @@ class jobService {
       };
     }
   }
-  async jobInsertByBotId(ctx, next) {
+  async jobInsert(ctx, next) {
     try {
-      let _sql = 'INSERT INTO t_data( img1,img2,img3,txt) VALUES ( ?, ?,?, ?)';
+      let _sql = 'insert into jobs(botId, img1, img2, img3, txt1, txt2) values (?,?,?,?,?,?)';
       let _values = [
         ctx.request.body.img1,
         ctx.request.body.img2,
         ctx.request.body.img3,
-        ctx.request.body.txt,
+        ctx.request.body.txt1,
+        ctx.request.body.txt2,
       ];
       const result = await excuteSql(_sql, _values);
       ctx.body = {
@@ -41,13 +45,14 @@ class jobService {
   }
   async jobUpdateByBotId(ctx, next) {
     try {
-      let _sql = 'UPDATE t_data SET img1=?, img2=?, img3=?, txt=? WHERE id=?';
+      let _sql = 'update jobs set img1=?, img2=?,img3=?,txt1=?,txt2=? WHERE botId=?';
       let _values = [
         ctx.request.body.img1,
         ctx.request.body.img2,
         ctx.request.body.img3,
-        ctx.request.body.txt,
-        ctx.request.body.id,
+        ctx.request.body.txt1,
+        ctx.request.body.txt2,
+        ctx.request.body.botId
       ];
       const result = await excuteSql(_sql, _values);
       ctx.body = {
@@ -65,12 +70,13 @@ class jobService {
   }
   async jobDeleteByBotId(ctx, next) {
     try {
-      let _sql = 'DELETE FROM t_data WHERE id=?';
-      let _values = [ctx.request.body.id];
-      const result = await excuteSql(_sql, _values);
+      let _sql = 'delete from jobs where botId=?';
+      let _values = [ctx.params.botId];
+      let result = await excuteSql(_sql, _values);
+      result = jsonFormate(result);
       ctx.body = {
         msg: 'del success',
-        data: result.id,
+        data: `影响行数为:${result}条`,
         code: 200,
       };
     } catch (error) {

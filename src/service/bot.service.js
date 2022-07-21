@@ -1,78 +1,83 @@
-﻿const { excuteSql } = require('../utils/sql');
-
+﻿const { excuteSql } = require("../utils/sql");
+const jsonFormate = require("../utils/jsonFormate");
 class botService {
   async botSelectByUid(ctx, next) {
     try {
       let _sql = `select botId,baseUrl,accessToken,secret from bot where uid = ?`;
-      let _values = [ctx.request.body.uid]
-      const result = await excuteSql(_sql,_values);
+      let _values = [ctx.request.query.uid];
+      const result = await excuteSql(_sql, _values);
       ctx.body = {
-        msg: 'select success',
+        msg: "select success",
         data: result,
         code: 200,
       };
     } catch (error) {
       ctx.body = {
-        msg: 'select error',
+        msg: "select error",
         data: error.sqlMessage || null,
         code: 500,
       };
     }
   }
 
-  async botInsertByUid(ctx, next) {
+  async botInsert(ctx, next) {
     try {
-      let _sql = 'INSERT INTO bot( secret, webhook) VALUES ( ?, ?)';
-      let _values = [ctx.request.body.secret, ctx.request.body.webhook];
-      const result = await excuteSql(_sql, _values);
-      ctx.body = {
-        msg: 'insert success',
-        data: result.id,
-        code: 200,
-      };
-    } catch (error) {
-      ctx.body = {
-        msg: 'insert error',
-        data: error.sqlMessage || null,
-        code: 500,
-      };
-    }
-  }
-  async botUpdateByUid(ctx, next) {
-    try {
-      let _sql = 'UPDATE t_sender SET secret=?, webhook=? WHERE id=?';
+      let _sql = "INSERT INTO bot(uid, accessToken, secret) VALUES (?,?,?)";
       let _values = [
+        ctx.request.body.uid,
+        ctx.request.body.accessToken,
         ctx.request.body.secret,
-        ctx.request.body.webhook,
-        ctx.request.body.id,
       ];
       const result = await excuteSql(_sql, _values);
       ctx.body = {
-        msg: 'update success',
-        data: result.id,
+        msg: "insert success",
+        data: result,
         code: 200,
       };
     } catch (error) {
       ctx.body = {
-        msg: 'update error',
+        msg: "insert error",
         data: error.sqlMessage || null,
         code: 500,
       };
     }
   }
-  async botDeleteByUid(ctx, next) {
+  async botUpdateByBotId(ctx, next) {
     try {
-      let _sql = 'DELETE FROM t_sender WHERE id=?';
-      let _values = [ctx.params.id];
+      let _sql = "update bot set accessToken=?,secret=? where botId=?";
+      let _values = [
+        ctx.request.body.accessToken,
+        ctx.request.body.secret,
+        ctx.request.body.botId,
+      ];
       const result = await excuteSql(_sql, _values);
       ctx.body = {
-        msg: 'delete success',
-        data: result.id,
+        msg: "update success",
+        data: result,
         code: 200,
       };
     } catch (error) {
       ctx.body = {
-        msg: 'delete error',
+        msg: "update error",
+        data: error.sqlMessage || null,
+        code: 500,
+      };
+    }
+  }
+  async botDeleteByBotId(ctx, next) {
+    try {
+      let _sql = "delete from bot where botId=?";
+      let _values = [ctx.params.botId];
+      let result = await excuteSql(_sql, _values);
+      result = jsonFormate(result).affectedRows;
+      ctx.body = {
+        msg: "delete success",
+        data: `影响行数为:${result}条`,
+        code: 200,
+      };
+    } catch (error) {
+      ctx.body = {
+        msg: "delete error",
         data: error.sqlMessage || null,
         code: 500,
       };
