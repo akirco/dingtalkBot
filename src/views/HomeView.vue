@@ -38,9 +38,9 @@ const categories = ref({
   ],
 });
 </script>
-
+<!--  -->
 <template>
-  <main class="w-full max-w-[800px] fixed top-20 left-0 right-0 m-auto">
+  <main class="w-full max-w-[900px] top-20 left-0 right-0 m-auto fixed ">
     <TabGroup>
       <TabList class="flex space-x-1 rounded-xl bg-blue-900/20 p-1">
         <Tab

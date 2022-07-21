@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useLogInfoStore } from "@/stores/logInfo";
+import { useLogInfoStore } from "@/store/logInfo";
 import {
   Dialog,
   DialogPanel,
