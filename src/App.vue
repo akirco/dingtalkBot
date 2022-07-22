@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router';
-import LoginPanel from '@/components/LoginPanel.vue';
+import {defineAsyncComponent} from 'vue'
 import NavLinks from '@/components/NavLinks.vue';
+
+const LoginPanel = defineAsyncComponent({
+    loader: () => import('@/components/LoginPanel.vue')
+})
 </script>
 
 <template>

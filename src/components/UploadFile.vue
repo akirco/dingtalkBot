@@ -32,10 +32,10 @@ async function uploadImage(e: Event) {
 
 const onSubmit = (e: Event) => {
   e.preventDefault();
-  service.post('/api/v1/insert', {}).then((res) => {
-    console.log(res);
+  // service.post('/api/v1/insert', {}).then((res) => {
+  //   console.log(res);
+  // });
     openModal();
-  });
 };
 </script>
 

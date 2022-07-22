@@ -1,22 +1,18 @@
 <script setup lang="ts">
+import { reactive } from 'vue';
 import { LockClosedIcon } from '@heroicons/vue/solid';
+import service from '@/api/http';
+
+const loginInfo = reactive({
+  uname:"",
+  pwd:""
+});
+
 const submit = (e: any) => {
   e.preventDefault();
-  const form = e.target;
-  const data = new FormData(form);
-  const xhr = new XMLHttpRequest();
-  xhr.open(form.method, form.action);
-  xhr.setRequestHeader('Accept', 'application/json');
-  xhr.onreadystatechange = () => {
-    if (xhr.readyState !== XMLHttpRequest.DONE) return;
-    if (xhr.status === 200) {
-      form.reset();
-      alert('Success!');
-    } else {
-      alert('Error!');
-    }
-  };
-  xhr.send(data);
+  service.post('http://localhost:4000/api/user/insert',loginInfo).then(res=>{
+    console.log(res);
+  })
 };
 </script>
 <template>
@@ -39,27 +35,25 @@ const submit = (e: any) => {
         <input type="hidden" name="remember" value="true" />
         <div class="rounded-md shadow-sm -space-y-px">
           <div>
-            <label for="phone-number" class="sr-only">Email address</label>
             <input
-              id="phone-number"
-              name="phone"
+              name="uname"
               type="text"
-              autocomplete="phone"
+              v-model="loginInfo.uname"
               required="true"
+              autocomplete="off"
               class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-              placeholder="Phone Number"
+              placeholder="请输入用户名"
             />
           </div>
           <div>
-            <label for="password" class="sr-only">Password</label>
             <input
-              id="password"
-              name="password"
+              name="pwd"
               type="password"
-              autocomplete="current-password"
+              v-model="loginInfo.pwd"
+              autocomplete="off"
               required="true"
               class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-              placeholder="Password"
+              placeholder="请输入密码"
             />
           </div>
         </div>
@@ -67,12 +61,12 @@ const submit = (e: any) => {
         <div class="flex items-center justify-between">
           <div class="flex items-center">
             <input
-              id="remember-me"
-              name="remember-me"
+              id="remember"
+              name="remember"
               type="checkbox"
               class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
             />
-            <label for="remember-me" class="ml-2 block text-sm text-gray-900">
+            <label for="remember" class="ml-2 block text-sm text-gray-900">
               Remember me
             </label>
           </div>

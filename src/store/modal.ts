@@ -11,6 +11,9 @@ export const useModalStore = defineStore({
   actions: {
     openModal() {
       this.isOpen = true;
+      setTimeout(() => {
+        this.isOpen = false;
+      }, 3000);
     },
   },
 });
