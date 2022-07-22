@@ -26,7 +26,7 @@ class userService {
       const result = await excuteSql(_sql, _values);
       ctx.body = {
         msg: 'insert success',
-        data: result,
+        data: result.affectedRows>=1?`注册成功!`:null,
         code: 200,
       };
     } catch (error) {
