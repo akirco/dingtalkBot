@@ -1,9 +1,10 @@
-﻿const { excuteSql } = require('../utils/sql');
+﻿const { excuteSql } = require("../utils/sql");
 
 class Admin {
-  async botSelectAll(ctx, next) {
+  async selectAll(ctx, next) {
     try {
-      const result = await excuteSql(`SELECT * FROM t_sender`);
+      const _sql = `select * from bot,jobs,user where bot.botId=jobs.botId and user.uid=bot.uid;`;
+      const result = await excuteSql(_sql);
       ctx.body = {
         msg: "select success",
         data: result,
@@ -18,3 +19,5 @@ class Admin {
     }
   }
 }
+
+module.exports = new Admin();

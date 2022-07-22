@@ -66,6 +66,6 @@ values (2,
 # from bot
 # where uid = 2;
 select * from bot,jobs where bot.botId=jobs.botId ;
-select * from bot,jobs,users where bot.botId=jobs.botId and users.uid=bot.uid;
+select * from bot,jobs,user where bot.botId=jobs.botId and user.uid=bot.uid;
 
 
