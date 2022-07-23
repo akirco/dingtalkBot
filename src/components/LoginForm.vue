@@ -2,6 +2,7 @@
 import { reactive } from 'vue';
 import { LockClosedIcon } from '@heroicons/vue/solid';
 import service from '@/api/http';
+import MessageBox from '@/plugins/message'
 
 const loginInfo = reactive({
   uname:"",
@@ -12,6 +13,10 @@ const submit = (e: any) => {
   e.preventDefault();
   service.post('http://localhost:4000/api/user/insert',loginInfo).then(res=>{
     console.log(res);
+    MessageBox({
+      text:"操作成功！",
+      type:"success"
+    })
   })
 };
 </script>
