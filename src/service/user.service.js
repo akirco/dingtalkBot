@@ -1,5 +1,6 @@
 ﻿const { excuteSql } = require('../utils/sql');
 const jsonFormate = require('../utils/jsonFormate');
+const jwt = require('jsonwebtoken')
 class userService {
   async userSelectByUid(ctx, next) {
     try {
@@ -73,6 +74,43 @@ class userService {
     } catch (error) {
       ctx.body = {
         msg: 'del error',
+        data: error.sqlMessage || null,
+        code: 500,
+      };
+    }
+  }
+  async userSignIn(ctx,next){
+    try {
+      const _values = ctx.request.body;
+      if(!_values.uname||!_values.pwd){
+         ctx.body={
+          msg:"用户名或密码为空！",
+          data:null,
+          code:404
+        }
+      }
+      let _sql=`select uid,pwd from user where uname = ?`
+      let result = await excuteSql(_sql,[ctx.request.body.uname]);
+      result = jsonFormate(result)[0];
+      if(result.pwd===ctx.request.body.pwd){
+        const token = jwt.sign({name:ctx.request.body.uname},"RHhJsX22NXiwfYJ",{expiresIn: 60 * 60*60})
+        ctx.body={
+          msg:"登录成功！",
+          data:{
+            token
+          },
+          code:200
+        }
+      }else{
+        ctx.body={
+          msg:"用户名或密码错误！",
+          data:null,
+          code:200
+        }
+      }
+    } catch (error) {
+      ctx.body = {
+        msg: 'sign in error',
         data: error.sqlMessage || null,
         code: 500,
       };
