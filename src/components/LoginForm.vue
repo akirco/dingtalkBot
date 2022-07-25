@@ -1,23 +1,24 @@
 <script setup lang="ts">
-import { reactive } from 'vue';
-import { LockClosedIcon } from '@heroicons/vue/solid';
-import service from '@/api/http';
-import MessageBox from '@/plugins/message'
-
+import { reactive } from "vue";
+import { LockClosedIcon } from "@heroicons/vue/solid";
+import feather from "@/assets/img/feather.png";
+import Request from "@/api/request";
+const request = new Request();
 const loginInfo = reactive({
-  uname:"",
-  pwd:""
+  uname: "",
+  pwd: "",
 });
-
 const submit = (e: any) => {
   e.preventDefault();
-  service.post('http://localhost:4000/api/user/insert',loginInfo).then(res=>{
-    console.log(res);
-    MessageBox({
-      text:"操作成功！",
-      type:"success"
-    })
-  })
+  if (loginInfo.uname !== "" && loginInfo.pwd !== "") {
+    request.post("/api/user/insert", loginInfo).then((res) => {
+      // const token = res.headers['authorization']
+      // console.log(token);
+      
+      ElMessage.success(res.data as unknown as string);
+    });
+  }
+  ElMessage.warning("用户名或密码为空！")
 };
 </script>
 <template>
@@ -26,11 +27,7 @@ const submit = (e: any) => {
   >
     <div class="max-w-md w-full space-y-8">
       <div>
-        <img
-          class="mx-auto h-12 w-auto"
-          src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
-          alt="Workflow"
-        />
+        <img class="mx-auto h-12 w-auto" :src="feather" alt="Workflow" />
         <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
           Sign in to your account
         </h2>

@@ -47,7 +47,7 @@ const open = login;
               leave-to="translate-x-full"
             >
               <DialogPanel
-                class="pointer-events-auto relative w-screen max-w-2xl"
+                class="pointer-events-auto relative w-screen max-w-xl"
               >
                 <TransitionChild
                   as="template"
@@ -76,7 +76,7 @@ const open = login;
                 >
                   <div class="px-4 sm:px-6">
                     <DialogTitle class="text-lg font-medium text-gray-900">
-                      Register or Login
+                       Login
                     </DialogTitle>
                   </div>
                   <div class="relative mt-6 flex-1 px-4 sm:px-6">

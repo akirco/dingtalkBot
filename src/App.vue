@@ -17,5 +17,5 @@ const LoginPanel = defineAsyncComponent({
 </template>
 
 <style>
-@import '@/assets/base.css';
+@import '@/assets/style/base.css';
 </style>

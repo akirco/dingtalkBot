@@ -2,28 +2,27 @@
 import { RouterLink } from "vue-router";
 import { useLogInfoStore } from "@/store/logInfo";
 import IconMoon from "@/components/icons/IconMoon.vue";
+import feather from '@/assets/img/feather.png'
 
 const toogleTheme = () => {
   const body = document.querySelector("html");
   body?.classList.toggle("dark");
-};
-
-const register = () => {
-  console.log("Registering...");
-  const loginStore = useLogInfoStore();
-  loginStore.login = true;
 };
 const login = () => {
   console.log("Logging in...");
   const loginStore = useLogInfoStore();
   loginStore.login = true;
 };
+
+const register = () => {
+  console.log("register...");
+};
 </script>
 <template>
   <nav class="bg-gray-900 sticky z-99999 top-0">
     <div class="m-auto flex items-center w-auto">
       <img
-        src="@/assets/feather.png"
+        :src="feather"
         alt="dingTalkBot"
         class="w-[50px] h-[50px]"
       />
