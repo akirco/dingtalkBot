@@ -3,6 +3,11 @@ import { reactive } from "vue";
 import { LockClosedIcon } from "@heroicons/vue/solid";
 import feather from "@/assets/img/feather.png";
 import Request from "@/api/request";
+import { useLogInfoStore } from "@/store/logInfo";
+
+const loginStore =useLogInfoStore();
+const { token } = storeToRefs(loginStore);
+
 const request = new Request();
 const loginInfo = reactive({
   uname: "",
@@ -11,14 +16,13 @@ const loginInfo = reactive({
 const submit = (e: any) => {
   e.preventDefault();
   if (loginInfo.uname !== "" && loginInfo.pwd !== "") {
-    request.post("/api/user/insert", loginInfo).then((res) => {
-      // const token = res.headers['authorization']
-      // console.log(token);
+    request.post("/api/user/login", loginInfo).then((res) => {
+      console.log(res.data);
+      
       
       ElMessage.success(res.data as unknown as string);
     });
   }
-  ElMessage.warning("用户名或密码为空！")
 };
 </script>
 <template>
