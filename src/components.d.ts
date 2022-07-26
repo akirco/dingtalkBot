@@ -7,14 +7,12 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    DialogPanel: typeof import('./components/DialogPanel.vue')['default']
     IconMoon: typeof import('./components/icons/IconMoon.vue')['default']
-    LoginForm: typeof import('./components/LoginForm.vue')['default']
-    LoginPanel: typeof import('./components/LoginPanel.vue')['default']
     NavLinks: typeof import('./components/NavLinks.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SettingsInfo: typeof import('./components/SettingsInfo.vue')['default']
     UploadFile: typeof import('./components/UploadFile.vue')['default']
+    UserInfo: typeof import('./components/UserInfo.vue')['default']
   }
 }

@@ -1,9 +1,17 @@
 import axios from "axios";
-import type {AxiosInstance,AxiosRequestConfig,AxiosResponse,AxiosError} from "axios";
+import type {
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosResponse,
+  AxiosError,
+} from "axios";
 import codeMessage from "./code";
-import  {type Result,type instanceObject,formatJsonToUrlParams} from "./type";
+import {
+  type Result,
+  type instanceObject,
+  formatJsonToUrlParams,
+} from "./type";
 const BASE_PREFIX = import.meta.env.VITE_API_BASEURL;
-
 
 class Request {
   instance: AxiosInstance;
@@ -13,12 +21,12 @@ class Request {
   };
   constructor(config?: AxiosRequestConfig) {
     let cfg = Object.assign(this.baseConfig, config);
-    console.log(cfg);
+    console.log("config:", cfg);
     this.instance = axios.create(cfg);
     this.instance.interceptors.request.use(
       (config: AxiosRequestConfig) => {
         const token = localStorage.getItem("token") as string;
-        config.headers!.Authorization = token;
+        config.headers!["Authorization"] = "Bearer " + token;
         return config;
       },
       (error: AxiosError) => {
@@ -48,29 +56,52 @@ class Request {
   public request(config: AxiosRequestConfig): Promise<AxiosResponse> {
     return this.instance.request(config);
   }
-  
-  public get<T = any>( url: string,config?: AxiosRequestConfig): Promise<AxiosResponse<Result<T>>> {
+
+  public get<T = any>(
+    url: string,
+    config?: AxiosRequestConfig
+  ): Promise<AxiosResponse<Result<T>>> {
     return this.instance.get(url, config);
   }
 
-  public post<T = any>(url: string, data?: any,config?:AxiosRequestConfig): Promise<AxiosResponse<Result<T>>> {
-    return this.instance.post(url, data,config);
+  public post<T = any>(
+    url: string,
+    data?: any,
+    config?: AxiosRequestConfig
+  ): Promise<AxiosResponse<Result<T>>> {
+    return this.instance.post(url, data, config);
   }
 
-  public put<T = any>(url: string, data?: any,config?:AxiosRequestConfig): Promise<AxiosResponse<Result<T>>> {
-    return this.instance.put(url, data,config);
+  public put<T = any>(
+    url: string,
+    data?: any,
+    config?: AxiosRequestConfig
+  ): Promise<AxiosResponse<Result<T>>> {
+    return this.instance.put(url, data, config);
   }
 
-  public delete<T = any>(url: string, data?: any,config?:AxiosRequestConfig): Promise<AxiosResponse<Result<T>>> {
+  public delete<T = any>(
+    url: string,
+    data?: any,
+    config?: AxiosRequestConfig
+  ): Promise<AxiosResponse<Result<T>>> {
     return this.instance.delete(url, config);
   }
 
-  public upload<T = any>(url: string, file: FormData | File,config:AxiosRequestConfig={ headers: { 'Content-Type': 'multipart/form-data' }}): Promise<AxiosResponse<Result<T>>> {
-    return this.instance.post(url,file,config);
+  public upload<T = any>(
+    url: string,
+    file: FormData | File,
+    config: AxiosRequestConfig = {
+      headers: { "Content-Type": "multipart/form-data" },
+    }
+  ): Promise<AxiosResponse<Result<T>>> {
+    return this.instance.post(url, file, config);
   }
 
-  public download(url: string, data: instanceObject){
-    window.location.href = `${BASE_PREFIX}/${url}?${formatJsonToUrlParams(data)}`;
+  public download(url: string, data: instanceObject) {
+    window.location.href = `${BASE_PREFIX}/${url}?${formatJsonToUrlParams(
+      data
+    )}`;
   }
 }
 export default Request;

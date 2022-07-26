@@ -20,7 +20,7 @@ const submit = (e: Event) => {
       <div class="mt-5 md:mt-0 md:col-span-2">
         <form action="#" method="POST">
           <div class="shadow overflow-hidden sm:rounded-md">
-            <div class="px-4 py-5 bg-white sm:p-6">
+            <div class="px-4 py-5 bg-white sm:p-6 dark:bg-slate-800">
               <div class="grid grid-cols-6 gap-6">
                 <div class="col-span-6">
                   <label class="block text-sm font-medium text-gray-700"
@@ -28,7 +28,7 @@ const submit = (e: Event) => {
                   >
                   <input
                     type="text"
-                    class="border-gray-200 border-2 rounded-lg py-2 px-8"
+                    class="border-gray-200 border-2 rounded-lg py-2 px-8 dark:bg-slate-600"
                   />
                 </div>
                 <div class="col-span-6">
@@ -37,12 +37,14 @@ const submit = (e: Event) => {
                   >
                   <input
                     type="text"
-                    class="border-gray-200 border-2 rounded-lg py-2 px-8"
+                    class="border-gray-200 border-2 rounded-lg py-2 px-8 dark:bg-slate-600"
                   />
                 </div>
               </div>
             </div>
-            <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
+            <div
+              class="px-4 py-3 bg-gray-50 text-right sm:px-6 dark:bg-slate-800"
+            >
               <button
                 type="submit"
                 @click="submit"
