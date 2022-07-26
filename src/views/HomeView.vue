@@ -2,6 +2,7 @@
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
 import { ref } from "vue";
 const categories = ref(["UploadFile", "Settings", "Personal"]);
+
 </script>
 <template>
   <main class="w-full max-w-[1000px] top-20 left-0 right-0 m-auto fixed">
@@ -30,26 +31,32 @@ const categories = ref(["UploadFile", "Settings", "Personal"]);
         <TabPanel
           :class="[
             'rounded-xl bg-white p-3',
-            'ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none ring-2  dark:bg-black dark:ring-black dark:ring-offset-indigo-900',
+            'ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none ring-2  dark:bg-slate-800 dark:ring-black dark:ring-offset-slate-900',
           ]"
         >
-          <UploadFile />
+          <KeepAlive include="file">
+            <UploadFile name="file" />
+          </KeepAlive>
         </TabPanel>
         <TabPanel
           :class="[
             'rounded-xl bg-white p-3',
-            'ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none ring-2 dark:bg-slate-800 dark:ring-black dark:ring-offset-indigo-900',
+            'ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none ring-2 dark:bg-slate-800 dark:ring-black dark:ring-offset-slate-900',
           ]"
         >
-          <SettingsInfo />
+          <KeepAlive include="settings">
+            <SettingsInfo name="settings" />
+          </KeepAlive>
         </TabPanel>
         <TabPanel
           :class="[
             'rounded-xl bg-white p-3',
-            'ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none ring-2 dark:bg-black dark:ring-black dark:ring-offset-indigo-900',
+            'ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none ring-2 dark:bg-slate-800 dark:ring-black dark:ring-offset-slate-900',
           ]"
         >
-          <UserInfo />
+          <KeepAlive include="info">
+            <UserInfo name="info" />
+          </KeepAlive>
         </TabPanel>
       </TabPanels>
     </TabGroup>

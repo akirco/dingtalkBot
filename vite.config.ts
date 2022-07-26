@@ -37,17 +37,12 @@ export default defineConfig({
     },
   },
   server:{
-    host: true, // host设置为true才可以使用network的形式，以ip访问项目
-    port: 3000, // 端口号
-    open: true, // 自动打开浏览器
-    cors: true, // 跨域设置允许,
+    host: true, 
+    port: 3000, 
+    open: true, 
+    cors: true, 
     proxy:{
-      '/api': {
-        //代理到 8888 的服务端口
-        target: 'http://localhost:4000/',
-        changeOrigin: true, // 允许跨域
-        rewrite: (path) => path.replace('/api/', '/'),
-      },
+      '/api': 'http://localhost:4000' 
     }
   }
 });

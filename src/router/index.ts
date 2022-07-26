@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
 import LandingPage from "@/views/LandingPage.vue";
-import LoginView from "@/views/LoginView.vue";
 import "nprogress/nprogress.css";
 import nProgress from "nprogress";
 
@@ -34,12 +33,7 @@ const router = createRouter({
           component: () => import("@/views/LinkView.vue"),
         },
       ],
-    },
-    {
-      path: "/login",
-      name: "login",
-      component: LoginView,
-    },
+    }
   ],
 });
 
