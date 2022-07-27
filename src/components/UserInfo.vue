@@ -15,6 +15,7 @@ function logout(e: Event) {
   isLogin.value = false;
 }
 
+
 onBeforeMount(() => {
   console.log("挂载前");
   const TOKEN = localStorage.getItem("token");
@@ -94,19 +95,6 @@ onBeforeUnmount(() => {
                 </div>
                 <div class="border-t border-gray-200 dark:border-gray-700">
                   <dl>
-                    <!-- <div
-                      class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 dark:bg-slate-700"
-                    >
-                      <dt class="text-sm font-medium text-gray-500">
-                        User uid
-                      </dt>
-                      <dd
-                        class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"
-                      >
-                      
-                        {{ LoginInfo.uid }}
-                      </dd>
-                    </div> -->
                     <div
                       class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 dark:bg-slate-700"
                     >
@@ -129,7 +117,7 @@ onBeforeUnmount(() => {
                       <dd
                         class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"
                       >
-                        {{ LoginInfo.isAdmin === "1" ? "是" : "否" }}
+                        {{ (LoginInfo.isAdmin as unknown) as number ===1 ?"Yes":"No" }}
                       </dd>
                     </div>
                     <div

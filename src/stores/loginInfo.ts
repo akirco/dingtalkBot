@@ -24,6 +24,7 @@ export const useUserStore = defineStore(
       try {
         const userInfo = await requset.post("/user/login", { uname, pwd });
         localStorage.setItem("token", userInfo.data.token as string);
+        localStorage.setItem("uid", userInfo.data.data.uid);
         ElMessage.success("登录成功!");
         isLogin.value = true;
         LoginInfo.uid = userInfo.data.data.uid;
@@ -34,6 +35,7 @@ export const useUserStore = defineStore(
     }
     function logout() {
       localStorage.clear();
+      sessionStorage.clear();
       ElMessage.success("登出成功！");
     }
     return {
@@ -44,6 +46,10 @@ export const useUserStore = defineStore(
     };
   },
   {
-    persist: true,
+    persist: {
+      key: "user",
+      storage: window.sessionStorage,
+      paths: ["LoginInfo.uname", "LoginInfo.isAdmin"],
+    },
   }
 );

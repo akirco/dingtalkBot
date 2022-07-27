@@ -7,6 +7,12 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    ElButton: typeof import('element-plus/es')['ElButton']
+    ElContainer: typeof import('element-plus/es')['ElContainer']
+    ElHeader: typeof import('element-plus/es')['ElHeader']
+    ElMain: typeof import('element-plus/es')['ElMain']
+    ElTable: typeof import('element-plus/es')['ElTable']
+    ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     IcomPinia: typeof import('./components/icons/IcomPinia.vue')['default']
     IconMoon: typeof import('./components/icons/IconMoon.vue')['default']
     NavLinks: typeof import('./components/NavLinks.vue')['default']

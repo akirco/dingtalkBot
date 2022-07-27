@@ -21,7 +21,6 @@ class Request {
   };
   constructor(config?: AxiosRequestConfig) {
     let cfg = Object.assign(this.baseConfig, config);
-    console.log("config:", cfg);
     this.instance = axios.create(cfg);
     this.instance.interceptors.request.use(
       (config: AxiosRequestConfig) => {
