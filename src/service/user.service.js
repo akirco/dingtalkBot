@@ -89,7 +89,7 @@ class userService {
           code:404
         }
       }
-      let _sql=`select uid,pwd from user where uname = ?`
+      let _sql=`select uid,pwd,isAdmin from user where uname = ?`
       let result = await excuteSql(_sql,[ctx.request.body.uname]);
       result = jsonFormate(result)[0];
       if(result.pwd===ctx.request.body.pwd){
@@ -97,7 +97,13 @@ class userService {
         ctx.body={
           msg:"登录成功！",
           data:{
-            token
+            token,
+            data:{
+              uid:result.uid,
+              uname:ctx.request.body.uname,
+              pwd:"",
+              isAdmin:result.isAdmin
+            }
           },
           code:200
         }
