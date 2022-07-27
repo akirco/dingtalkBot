@@ -20,6 +20,7 @@
     "install": "^0.13.0",
     "nprogress": "^0.2.0",
     "pinia": "^2.0.14",
+    "pinia-plugin-persistedstate": "^1.6.3",
     "vue": "^3.2.37",
     "vue-router": "^4.0.16"
   },

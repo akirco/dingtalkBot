@@ -1,29 +1,49 @@
-import { defineStore, acceptHMRUpdate } from "pinia";
+import { defineStore } from "pinia";
 import Request from "@/api/request";
 const requset = new Request();
 
-export const useUserStore = defineStore({
-  id: "user",
-  state: () => ({
-    name: "",
-    isLogin: false,
-  }),
-  actions: {
-    logout() {},
-    async login(uname: string, pwd: string) {
-      const userInfo = await requset.post("/user/login", { uname, pwd });
-      console.log("userInfo",userInfo); 
-      localStorage.setItem("token",(userInfo.data.token as string))
-      this.$patch({
-        name: uname,
-        ...userInfo,
-      });
-      ElMessage.success("login success!");
-      this.isLogin = true;
-    },
-  },
-});
-if (import.meta.hot) {
-  console.log("hot", import.meta.hot);
-  import.meta.hot.accept(acceptHMRUpdate(useUserStore, import.meta.hot));
+interface userInfo {
+  uid?: string;
+  uname: string;
+  pwd: string;
+  isAdmin?: string;
 }
+
+export const useUserStore = defineStore(
+  "user",
+  () => {
+    const isLogin = ref(false);
+    let LoginInfo: userInfo = reactive({
+      uid: "",
+      uname: "",
+      pwd: "",
+      isAdmin: "",
+    });
+
+    async function login({ uname, pwd }: userInfo) {
+      try {
+        const userInfo = await requset.post("/user/login", { uname, pwd });
+        localStorage.setItem("token", userInfo.data.token as string);
+        ElMessage.success("登录成功!");
+        isLogin.value = true;
+        LoginInfo.uid = userInfo.data.data.uid;
+        LoginInfo.isAdmin = userInfo.data.data.isAdmin;
+      } catch (error) {
+        ElMessage.error("请检查用户名或密码是否正确！");
+      }
+    }
+    function logout() {
+      localStorage.clear();
+      ElMessage.success("登出成功！");
+    }
+    return {
+      login,
+      isLogin,
+      LoginInfo,
+      logout,
+    };
+  },
+  {
+    persist: true,
+  }
+);

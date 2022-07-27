@@ -24,6 +24,7 @@ specifiers:
   npm-run-all: ^4.1.5
   nprogress: ^0.2.0
   pinia: ^2.0.14
+  pinia-plugin-persistedstate: ^1.6.3
   postcss: ^8.4.14
   prettier: ^2.5.1
   tailwindcss: ^3.1.4
@@ -48,6 +49,7 @@ dependencies:
   install: mirrors.tencent.com/install/0.13.0
   nprogress: 0.2.0
   pinia: 2.0.14_j6bzmzd4ujpabbp5objtwxyjp4
+  pinia-plugin-persistedstate: 1.6.3_pinia@2.0.14
   vue: 3.2.37
   vue-router: 4.0.16_vue@3.2.37
 
@@ -2463,6 +2465,14 @@ packages:
     resolution: {integrity: sha512-C3FsVNH1udSEX48gGX1xfvwTWfsYWj5U+8/uK15BGzIGrKoUpghX8hWZwa/OFnakBiiVNmBvemTJR5mcy7iPcg==}
     engines: {node: '>=4'}
     dev: true
+
+  /pinia-plugin-persistedstate/1.6.3_pinia@2.0.14:
+    resolution: {integrity: sha512-vwxUca3DZKW6+wnGsgu6hA0ESVKoLovF8vH1jMOPBhaH4VpCSTgn5AsprTxXyg3uMk047m0B+NggeMTcCC8H6w==}
+    peerDependencies:
+      pinia: ^2.0.0
+    dependencies:
+      pinia: 2.0.14_j6bzmzd4ujpabbp5objtwxyjp4
+    dev: false
 
   /pinia/2.0.14_j6bzmzd4ujpabbp5objtwxyjp4:
     resolution: {integrity: sha512-0nPuZR4TetT/WcLN+feMSjWJku3SQU7dBbXC6uw+R6FLQJCsg+/0pzXyD82T1FmAYe0lsx+jnEDQ1BLgkRKlxA==}

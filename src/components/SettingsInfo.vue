@@ -6,21 +6,21 @@ const submit = (e: Event) => {
 </script>
 <template>
   <div class="mt-10 sm:mt-0">
-    <div class="md:grid md:grid-cols-3 md:gap-6">
+    <div class="md:grid md:grid-cols-6 md:gap-3">
       <div class="md:col-span-1">
         <div class="px-4 sm:px-0">
           <h3 class="text-lg font-medium leading-6 text-gray-900">
             钉钉机器人
           </h3>
-          <p class="mt-1 text-sm text-gray-600">
-            请认真填写钉钉机器人信息，以便您的钉钉机器人能够正常工作。
-          </p>
         </div>
         <div class="h-[400px]"></div>
       </div>
+      <div class="mt-5 md:mt-0 md:col-span-3">
+        <div class="shadow overflow-auto sm:rounded-md h-[450px]"></div>
+      </div>
       <div class="mt-5 md:mt-0 md:col-span-2">
         <form action="#" method="POST">
-          <div class="shadow overflow-hidden sm:rounded-md">
+          <div class="shadow overflow-hidden sm:rounded-md h-[450px]">
             <div class="px-4 py-5 bg-white sm:p-6 dark:bg-slate-800">
               <div class="grid grid-cols-6 gap-6">
                 <div class="col-span-6">
@@ -51,7 +51,7 @@ const submit = (e: Event) => {
                 @click="submit"
                 class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
-                Save
+                Add
               </button>
             </div>
           </div>
@@ -60,3 +60,10 @@ const submit = (e: Event) => {
     </div>
   </div>
 </template>
+
+<!-- 
+
+
+ 
+
+ -->
