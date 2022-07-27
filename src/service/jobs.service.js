@@ -4,7 +4,7 @@ class jobService {
   async jobSelectByBotId(ctx, next) {
     try {
       let _sql =  `select * from jobs where botId = ?`;
-      let _values = [ctx.request.query.uid]
+      let _values = [ctx.request.query.botId]
       const result = await excuteSql(_sql,_values);
       ctx.body = {
         msg: 'select success',
