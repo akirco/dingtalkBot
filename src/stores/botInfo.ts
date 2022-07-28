@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import Request from "@/api/request";
-const requset = new Request();
+const request = new Request();
 
 interface BotInfo {
   botId?: any;
@@ -18,11 +18,13 @@ export const useBotStore = defineStore(
       accessToken: "",
       secret: "",
     });
-    let botTable: any[] = reactive([]);
+    let bot = reactive({
+      list: [] as any[],
+    });
 
     async function addBot({ uid, accessToken, secret }: BotInfo) {
       if (uid && accessToken && secret) {
-        const botInfo = await requset.post("/bot/insert", {
+        const botInfo = await request.post("/bot/insert", {
           uid,
           accessToken,
           secret,
@@ -35,16 +37,17 @@ export const useBotStore = defineStore(
         ElMessage.error("不能添加空数据！");
       }
     }
-    async function getBotInfo() {
-      const uid = localStorage.getItem("uid");
-      const botDetails = await requset.get("/bot/query", { params: { uid } });
-      console.log("botDetails:", botDetails.data);
-      botTable.push(botDetails.data);
-    }
     return {
       botInfo,
-      botTable,
       addBot,
-      getBotInfo,
+      bot,
     };
-  });
+  },
+  {
+    persist: {
+      key: "bot",
+      storage: window.sessionStorage,
+      paths: ["bot"],
+    },
+  }
+);

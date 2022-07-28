@@ -58,8 +58,9 @@ class Request {
 
   public get<T = any>(
     url: string,
+    file?: FormData | File,
     config?: AxiosRequestConfig
-  ): Promise<AxiosResponse<Result<T>>> {
+  ): Promise<Result<T>> {
     return this.instance.get(url, config);
   }
 

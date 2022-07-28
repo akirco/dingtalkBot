@@ -1,28 +1,89 @@
 <script setup lang="ts">
-import { PaperClipIcon } from "@heroicons/vue/solid";
+import { LightningBoltIcon } from "@heroicons/vue/solid";
 import { useBotStore } from "@/stores/botInfo";
+import Request from "@/api/request";
+import dateFormate from "@/utils/dateFormate";
 const botStore = useBotStore();
-const { botInfo,botTable } = storeToRefs(botStore);
+const { botInfo, bot } = storeToRefs(botStore);
+const request = new Request();
+const dialogFormVisible = ref(false);
+const dialogTableVisible = ref(false);
+const formLabelWidth = "140px";
+const form = reactive({
+  name: "",
+  region: "",
+  date1: "",
+  date2: "",
+  delivery: false,
+  type: [],
+  resource: "",
+  desc: "",
+});
+
+const gridData: any = ref([]);
 
 const submit = (e: Event) => {
   e.preventDefault();
-  console.log("submit");
   const uid = localStorage.getItem("uid");
   if (uid) {
-    const bot = {
+    const botIn = {
       uid: uid,
       accessToken: botInfo.value.accessToken,
       secret: botInfo.value.secret,
     };
-    botStore.addBot(bot);
-    botStore.getBotInfo();
+    botStore.addBot(botIn);
+    request.get("/bot/query", { params: { uid } }).then((res) => {
+      bot.value.list = res.data;
+    });
   } else {
     ElMessage.warning("Token异常！请重新登录后尝试操作");
   }
 };
+
 onBeforeMount(() => {
-  botStore.getBotInfo();
+  const uid = localStorage.getItem("uid");
+  request.get("/bot/query", { params: { uid } }).then((res) => {
+    bot.value.list = res.data;
+  });
 });
+// 操作按钮
+function handleTasks(botId: number) {
+  dialogFormVisible.value = true;
+  console.log("current", botId);
+}
+function handleDatils(botId: number) {
+  dialogTableVisible.value = true;
+  console.log("current", botId);
+  request.get("/jobs/query", { params: { botId } }).then((res) => {
+    for (const item of res.data) {
+      console.log(item);
+      const data = {
+        botId: item.botId,
+        complete: item.complete === 1 ? "Yes" : "No",
+        created: dateFormate(item.created, "yyyy-MM-dd HH:mm:ss"),
+        img1: item.img1,
+        img2: item.img2,
+        img3: item.img3,
+        txt1: item.txt1,
+        txt2: item.txt2,
+      };
+      gridData.value.push(data);
+    }
+  });
+}
+function handleDelete(botId: number) {
+  request.delete(`/bot/delete/${botId}`).then((res) => {
+    ElMessage.success("删除成功");
+  });
+  const uid = localStorage.getItem("uid");
+  request.get("/bot/query", { params: { uid } }).then((res) => {
+    bot.value.list = res.data;
+  });
+}
+
+function clearData() {
+  gridData.value = [];
+}
 </script>
 <template>
   <div class="mt-10 sm:mt-0">
@@ -32,6 +93,7 @@ onBeforeMount(() => {
           <h3 class="text-lg font-medium leading-6 text-gray-900">
             钉钉机器人
           </h3>
+          <p>请谨慎操作！</p>
         </div>
         <div class="h-[400px]"></div>
       </div>
@@ -54,34 +116,36 @@ onBeforeMount(() => {
                   <ul
                     role="list"
                     class="border border-gray-200 rounded-md divide-y divide-gray-200"
+                    v-for="(item, index) in bot.list"
                   >
                     <li
                       class="pl-3 pr-4 py-3 flex items-center justify-between text-sm"
-                      v-for="i in 3"
                     >
                       <div class="w-0 flex-1 flex items-center">
-                        <PaperClipIcon
+                        <LightningBoltIcon
                           class="flex-shrink-0 h-5 w-5 text-gray-400"
                           aria-hidden="true"
                         />
-                        <span class="ml-2 flex-1 w-0 truncate"> 1 </span>
+                        <span class="ml-2 flex-1 w-0 truncate">
+                          {{ item.botId }}
+                        </span>
                       </div>
-                      <div class="ml-4 flex-shrink-0">
+                      <div class="ml-4 flex-shrink-0 space-x-3">
                         <a
-                          href="#"
-                          class="font-medium text-indigo-600 hover:text-indigo-500"
+                          @click="handleTasks(item.botId)"
+                          class="font-medium text-indigo-600 hover:text-indigo-500 hover:cursor-pointer"
+                        >
+                          绑定任务
+                        </a>
+                        <a
+                          @click="handleDatils(item.botId)"
+                          class="font-medium text-indigo-600 hover:text-indigo-500 hover:cursor-pointer"
                         >
                           详情
                         </a>
                         <a
-                          href="#"
-                          class="font-medium text-indigo-600 hover:text-indigo-500"
-                        >
-                          编辑
-                        </a>
-                        <a
-                          href="#"
-                          class="font-medium text-indigo-600 hover:text-indigo-500"
+                          @click="handleDelete(item.botId)"
+                          class="font-medium text-indigo-600 hover:text-indigo-500 hover:cursor-pointer"
                         >
                           删除
                         </a>
@@ -137,5 +201,43 @@ onBeforeMount(() => {
         </form>
       </div>
     </div>
+    <el-dialog v-model="dialogFormVisible" title="Shipping address">
+      <el-form :model="form">
+        <el-form-item label="Promotion name" :label-width="formLabelWidth">
+          <el-input v-model="form.name" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="Zones" :label-width="formLabelWidth">
+          <el-select v-model="form.region" placeholder="Please select a zone">
+            <el-option label="Zone No.1" value="shanghai" />
+            <el-option label="Zone No.2" value="beijing" />
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="dialogFormVisible = false">Cancel</el-button>
+          <el-button type="primary" @click="dialogFormVisible = false"
+            >Confirm</el-button
+          >
+        </span>
+      </template>
+    </el-dialog>
+    <el-dialog
+      v-model="dialogTableVisible"
+      title="机器人任务"
+      width="50%"
+      @close="clearData"
+    >
+      <el-table :data="gridData">
+        <el-table-column property="botId" label="botId" width="200" />
+        <el-table-column property="complete" label="完成情况" width="200" />
+        <el-table-column property="created" label="创建时间" width="200" />
+        <el-table-column property="img1" label="图1" width="200" />
+        <el-table-column property="img2" label="图2" width="200" />
+        <el-table-column property="img3" label="图3" width="200" />
+        <el-table-column property="txt1" label="文1" width="200" />
+        <el-table-column property="txt2" label="文2" width="200" />
+      </el-table>
+    </el-dialog>
   </div>
 </template>
