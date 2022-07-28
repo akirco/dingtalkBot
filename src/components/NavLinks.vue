@@ -1,6 +1,5 @@
 ﻿<script setup lang="ts">
 import { RouterLink } from "vue-router";
-import { useLogInfoStore } from "@/store/logInfo";
 import IconMoon from "@/components/icons/IconMoon.vue";
 import feather from "@/assets/img/feather.png";
 

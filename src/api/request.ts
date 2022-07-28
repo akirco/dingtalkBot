@@ -18,6 +18,7 @@ class Request {
   baseConfig: AxiosRequestConfig = {
     baseURL: BASE_PREFIX,
     timeout: 60 * 1000,
+    headers: { 'Content-Type': 'application/json; charset=utf-8' }
   };
   constructor(config?: AxiosRequestConfig) {
     let cfg = Object.assign(this.baseConfig, config);
@@ -25,7 +26,7 @@ class Request {
     this.instance.interceptors.request.use(
       (config: AxiosRequestConfig) => {
         const token = localStorage.getItem("token") as string;
-        config.headers!["Authorization"] = "Bearer " + token;
+        config.headers!["Authorization"] = token;
         return config;
       },
       (error: AxiosError) => {
@@ -58,10 +59,10 @@ class Request {
 
   public get<T = any>(
     url: string,
+    config?: AxiosRequestConfig,
     file?: FormData | File,
-    config?: AxiosRequestConfig
   ): Promise<Result<T>> {
-    return this.instance.get(url, config);
+    return this.instance.get(url, config,file);
   }
 
   public post<T = any>(
