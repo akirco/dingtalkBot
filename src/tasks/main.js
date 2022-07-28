@@ -4,7 +4,7 @@ const ChatBot = require('dingtalk-robot-sender');
 //查询bot信息
 async function getBots(callback) {
   const bots = await excuteSqlConn(
-    `select * from bot,jobs where bot.botId=jobs.botId;`
+    `select * from bot,jobs where bot.botId=jobs.botId and jobs.complete=0;`
   );
   callback(bots);
 }
