@@ -18,7 +18,7 @@ class Request {
   baseConfig: AxiosRequestConfig = {
     baseURL: BASE_PREFIX,
     timeout: 60 * 1000,
-    headers: { 'Content-Type': 'application/json; charset=utf-8' }
+    headers: { "Content-Type": "application/json; charset=utf-8" },
   };
   constructor(config?: AxiosRequestConfig) {
     let cfg = Object.assign(this.baseConfig, config);
@@ -59,17 +59,16 @@ class Request {
 
   public get<T = any>(
     url: string,
-    config?: AxiosRequestConfig,
-    file?: FormData | File,
+    config?: AxiosRequestConfig
   ): Promise<Result<T>> {
-    return this.instance.get(url, config,file);
+    return this.instance.get(url, config);
   }
 
   public post<T = any>(
     url: string,
     data?: any,
     config?: AxiosRequestConfig
-  ): Promise<AxiosResponse<Result<T>>> {
+  ): Promise<Result<T>> {
     return this.instance.post(url, data, config);
   }
 
