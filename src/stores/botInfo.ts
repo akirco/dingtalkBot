@@ -10,6 +10,21 @@ interface BotInfo {
   secret: string;
 }
 
+interface JobsInfo {
+  id: any;
+  uid: any;
+  botId: any;
+  remark: string;
+  complete: any;
+  created: string;
+  updated: string;
+  img1: string;
+  img2: string;
+  img3: string;
+  txt1: string;
+  txt2: string;
+}
+
 export const useBotStore = defineStore(
   "bot",
   () => {
@@ -21,7 +36,7 @@ export const useBotStore = defineStore(
     let bot = reactive({
       list: [] as any[],
     });
-
+    let jobs: Array<JobsInfo> = reactive([]);
     async function addBot({ uid, accessToken, secret }: BotInfo) {
       if (uid && accessToken && secret) {
         const botInfo = await request.post("/bot/insert", {
@@ -37,17 +52,29 @@ export const useBotStore = defineStore(
         ElMessage.error("不能添加空数据！");
       }
     }
+    async function queryJobsByNoCompleted(uid: string) {
+      const result = await request.get("/jobs/queryTasks", { params: { uid } });
+      if (result.code === 200) {
+        for(let i = 0; i<result.data.length;i++){
+          if(result.data[i]){
+            jobs.push(result.data[i]);
+          }
+        }
+      }
+    }
     return {
+      bot,
+      jobs,
       botInfo,
       addBot,
-      bot,
+      queryJobsByNoCompleted,
     };
   },
   {
     persist: {
       key: "bot",
       storage: window.sessionStorage,
-      paths: ["bot"],
+      paths: ["bot", "jobs"],
     },
   }
 );

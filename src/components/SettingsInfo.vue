@@ -3,24 +3,19 @@ import { LightningBoltIcon } from "@heroicons/vue/solid";
 import { useBotStore } from "@/stores/botInfo";
 import Request from "@/api/request";
 import dateFormate from "@/utils/dateFormate";
+import type { FormInstance } from "element-plus";
+
 const botStore = useBotStore();
-const { botInfo, bot } = storeToRefs(botStore);
+const { botInfo, bot, jobs } = storeToRefs(botStore);
 const request = new Request();
 const dialogFormVisible = ref(false);
 const dialogTableVisible = ref(false);
-const formLabelWidth = "140px";
-const form = reactive({
-  name: "",
-  region: "",
-  date1: "",
-  date2: "",
-  delivery: false,
-  type: [],
-  resource: "",
-  desc: "",
+const jobsForm = reactive({
+  jobId: "",
+  botId: "",
 });
-
 const gridData: any = ref([]);
+const formRef = ref<FormInstance>();
 
 const submit = (e: Event) => {
   e.preventDefault();
@@ -47,9 +42,13 @@ onBeforeMount(() => {
   });
 });
 // 操作按钮
-function handleTasks(botId: number) {
+function handleTasks(botId: string) {
   dialogFormVisible.value = true;
-  console.log("current", botId);
+  const uid = localStorage.getItem("uid");
+  if (uid) {
+    botStore.queryJobsByNoCompleted(uid);
+    jobsForm.botId = botId;
+  }
 }
 function handleDatils(botId: number) {
   dialogTableVisible.value = true;
@@ -83,6 +82,23 @@ function handleDelete(botId: number) {
 
 function clearData() {
   gridData.value = [];
+}
+
+function bindTasks(id: string) {
+  console.log(id);
+  console.log(jobsForm.botId);
+  const data = {
+    botId: jobsForm.botId,
+    id: id,
+  };
+  request.put("/jobs/bindBot", data).then((res) => {
+    console.log(res);
+  });
+}
+
+function resetForm(formEl: FormInstance | undefined) {
+  if (!formEl) return;
+  formEl.resetFields();
 }
 </script>
 <template>
@@ -201,22 +217,34 @@ function clearData() {
         </form>
       </div>
     </div>
-    <el-dialog v-model="dialogFormVisible" title="Shipping address">
-      <el-form :model="form">
-        <el-form-item label="Promotion name" :label-width="formLabelWidth">
-          <el-input v-model="form.name" autocomplete="off" />
-        </el-form-item>
-        <el-form-item label="Zones" :label-width="formLabelWidth">
-          <el-select v-model="form.region" placeholder="Please select a zone">
-            <el-option label="Zone No.1" value="shanghai" />
-            <el-option label="Zone No.2" value="beijing" />
+    <el-dialog
+      v-model="dialogFormVisible"
+      title="bind Jobs"
+      @close="resetForm(formRef)"
+    >
+      <el-form :model="jobsForm" ref="formRef">
+        <el-form-item label="Jobs">
+          <el-select
+            v-model="jobsForm.jobId"
+            placeholder="Please select a jobs"
+          >
+            <el-option
+              v-for="item in jobs"
+              :label="item.remark"
+              :value="item.id"
+            />
           </el-select>
         </el-form-item>
       </el-form>
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="dialogFormVisible = false">Cancel</el-button>
-          <el-button type="primary" @click="dialogFormVisible = false"
+          <el-button
+            type="primary"
+            @click="
+              dialogFormVisible = false;
+              bindTasks(jobsForm.jobId);
+            "
             >Confirm</el-button
           >
         </span>
