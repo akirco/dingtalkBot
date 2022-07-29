@@ -3,6 +3,7 @@ import { LightningBoltIcon } from "@heroicons/vue/solid";
 import { useBotStore } from "@/stores/botInfo";
 import Request from "@/api/request";
 import dateFormate from "@/utils/dateFormate";
+import getAccessToken from "@/utils/getAccessToken";
 import type { FormInstance } from "element-plus";
 
 const botStore = useBotStore();
@@ -23,7 +24,7 @@ const submit = (e: Event) => {
   if (uid) {
     const botIn = {
       uid: uid,
-      accessToken: botInfo.value.accessToken,
+      accessToken: getAccessToken(botInfo.value.accessToken),
       secret: botInfo.value.secret,
     };
     botStore.addBot(botIn);
@@ -37,9 +38,11 @@ const submit = (e: Event) => {
 
 onBeforeMount(() => {
   const uid = localStorage.getItem("uid");
-  request.get("/bot/query", { params: { uid } }).then((res) => {
-    bot.value.list = res.data;
-  });
+  if (uid) {
+    request.get("/bot/query", { params: { uid } }).then((res) => {
+      bot.value.list = res.data;
+    });
+  }
 });
 // 操作按钮
 function handleTasks(botId: string) {
@@ -52,10 +55,8 @@ function handleTasks(botId: string) {
 }
 function handleDatils(botId: number) {
   dialogTableVisible.value = true;
-  console.log("current", botId);
   request.get("/jobs/query", { params: { botId } }).then((res) => {
     for (const item of res.data) {
-      console.log(item);
       const data = {
         botId: item.botId,
         complete: item.complete === 1 ? "Yes" : "No",
@@ -85,14 +86,14 @@ function clearData() {
 }
 
 function bindTasks(id: string) {
-  console.log(id);
-  console.log(jobsForm.botId);
   const data = {
     botId: jobsForm.botId,
     id: id,
   };
   request.put("/jobs/bindBot", data).then((res) => {
-    console.log(res);
+    if (res.code === 200) {
+      ElMessage.success("绑定成功！");
+    }
   });
 }
 
@@ -125,10 +126,10 @@ function resetForm(formEl: FormInstance | undefined) {
           <div class="border-gray-200">
             <dl>
               <div
-                class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 dark:bg-gray-900 dark:text-white"
+                class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-5 sm:gap-4 sm:px-6 dark:bg-gray-900 dark:text-white"
               >
-                <dt class="text-sm font-medium text-gray-500">botId</dt>
-                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                <dt class="text-sm font-medium text-gray-500">BotId</dt>
+                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-4">
                   <ul
                     role="list"
                     class="border border-gray-200 rounded-md divide-y divide-gray-200"
@@ -142,29 +143,20 @@ function resetForm(formEl: FormInstance | undefined) {
                           class="flex-shrink-0 h-5 w-5 text-gray-400"
                           aria-hidden="true"
                         />
-                        <span class="ml-2 flex-1 w-0 truncate">
-                          {{ item.botId }}
+                        <span class="ml-1 flex-1 w-0 truncate">
+                          {{ item.botId }}号
                         </span>
                       </div>
                       <div class="ml-4 flex-shrink-0 space-x-3">
-                        <a
-                          @click="handleTasks(item.botId)"
-                          class="font-medium text-indigo-600 hover:text-indigo-500 hover:cursor-pointer"
-                        >
+                        <el-button @click="handleTasks(item.botId)">
                           绑定任务
-                        </a>
-                        <a
-                          @click="handleDatils(item.botId)"
-                          class="font-medium text-indigo-600 hover:text-indigo-500 hover:cursor-pointer"
-                        >
+                        </el-button>
+                        <el-button @click="handleDatils(item.botId)">
                           详情
-                        </a>
-                        <a
-                          @click="handleDelete(item.botId)"
-                          class="font-medium text-indigo-600 hover:text-indigo-500 hover:cursor-pointer"
-                        >
+                        </el-button>
+                        <el-button @click="handleDelete(item.botId)">
                           删除
-                        </a>
+                        </el-button>
                       </div>
                     </li>
                   </ul>

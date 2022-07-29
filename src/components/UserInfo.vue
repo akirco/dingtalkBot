@@ -15,7 +15,6 @@ function logout(e: Event) {
   isLogin.value = false;
 }
 
-
 onBeforeMount(() => {
   console.log("挂载前");
   const TOKEN = localStorage.getItem("token");
@@ -63,7 +62,7 @@ onBeforeUnmount(() => {
                       >密码：</label
                     >
                     <input
-                      type="text"
+                      type="password"
                       v-model="LoginInfo.pwd"
                       class="border-gray-200 border-2 rounded-lg py-2 px-8 dark:bg-slate-600"
                     />
@@ -117,7 +116,11 @@ onBeforeUnmount(() => {
                       <dd
                         class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"
                       >
-                        {{ (LoginInfo.isAdmin as unknown) as number ===1 ?"Yes":"No" }}
+                        {{
+                          (LoginInfo.isAdmin as unknown as number) === 1
+                            ? "Yes"
+                            : "No"
+                        }}
                       </dd>
                     </div>
                     <div

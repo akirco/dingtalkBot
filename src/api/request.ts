@@ -76,7 +76,7 @@ class Request {
     url: string,
     data?: any,
     config?: AxiosRequestConfig
-  ): Promise<AxiosResponse<Result<T>>> {
+  ): Promise<Result<T>> {
     return this.instance.put(url, data, config);
   }
 

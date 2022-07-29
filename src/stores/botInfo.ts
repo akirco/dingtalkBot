@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import Request from "@/api/request";
+import type { Ref } from "vue";
 const request = new Request();
 
 interface BotInfo {
@@ -36,7 +37,8 @@ export const useBotStore = defineStore(
     let bot = reactive({
       list: [] as any[],
     });
-    let jobs: Array<JobsInfo> = reactive([]);
+    let jobs: Ref<Array<JobsInfo>> = ref([]);
+
     async function addBot({ uid, accessToken, secret }: BotInfo) {
       if (uid && accessToken && secret) {
         const botInfo = await request.post("/bot/insert", {
@@ -55,11 +57,7 @@ export const useBotStore = defineStore(
     async function queryJobsByNoCompleted(uid: string) {
       const result = await request.get("/jobs/queryTasks", { params: { uid } });
       if (result.code === 200) {
-        for(let i = 0; i<result.data.length;i++){
-          if(result.data[i]){
-            jobs.push(result.data[i]);
-          }
-        }
+        jobs.value = result.data;
       }
     }
     return {
