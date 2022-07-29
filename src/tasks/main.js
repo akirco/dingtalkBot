@@ -55,7 +55,7 @@ async function sendMarkdown(title, robot, bot) {
       let index = key.replace(/[^0-9]/gi, '');
       let currentImg = `img${index}`;
       if (bot[currentImg] !== '') {
-        let rawMarkdown = '![](' + bot[currentImg] + ')';
+        let rawMarkdown = '![](http:localhost:4000/static/' + bot[currentImg] + ')';
         await robot.markdown(title, rawMarkdown, {}).then(() => {
           console.log('Markdown发送成功！');
         });

@@ -19,6 +19,24 @@ class jobService {
       };
     }
   }
+  async jobSelectByUid(ctx,next){
+    try {
+      let _sql = `select * from jobs where uid=? and complete=0;`;
+      let _values = [ctx.request.query.uid];
+      const result = await excuteSql(_sql, _values);
+      ctx.body = {
+        msg: "select success",
+        data: result,
+        code: 200,
+      };
+    } catch (error) {
+      ctx.body = {
+        msg: "select error",
+        data: error.sqlMessage || null,
+        code: 500,
+      };
+    }
+  }
   async jobInsert(ctx, next) {
     try {
       let _sql =
@@ -41,6 +59,28 @@ class jobService {
     } catch (error) {
       ctx.body = {
         msg: "insert error",
+        data: error.sqlMessage || null,
+        code: 500,
+      };
+    }
+  }
+  async jobBindBotId(ctx, next) {
+    try {
+      let _sql =
+        "update jobs set botId=? where id = ?;";
+      let _values = [
+        ctx.request.body.botId,
+        ctx.request.body.id,
+      ];
+      const result = await excuteSql(_sql, _values);
+      ctx.body = {
+        msg: "update success",
+        data: result,
+        code: 200,
+      };
+    } catch (error) {
+      ctx.body = {
+        msg: "update error",
         data: error.sqlMessage || null,
         code: 500,
       };
