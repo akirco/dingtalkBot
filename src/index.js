@@ -2,6 +2,7 @@ const Koa = require("koa");
 const Router = require("@koa/router");
 const bodyParser = require("koa-bodyparser");
 const cors = require("koa2-cors");
+const serve = require('koa-staticfiles');
 const { APP_PORT } = require("./config/default");
 const botRouter = require("./router/bot.router");
 const userRouter = require("./router/user.router");
@@ -16,6 +17,7 @@ app.use(bodyParser());
 app.use(cors());
 app.use(router.routes());
 app.use(router.allowedMethods());
+app.use(serve('./public/upload',{prefix:"/static"}));
 
 //? extra router
 app.use(botRouter.routes(),botRouter.allowedMethods());
