@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { LightningBoltIcon } from "@heroicons/vue/solid";
+import {ElMessage} from "element-plus";
 import { useBotStore } from "@/stores/botInfo";
 import Request from "@/api/request";
 import dateFormate from "@/utils/dateFormate";

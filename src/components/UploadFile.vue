@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import { ElMessage } from "element-plus";
 import type {
   UploadFile,
   UploadUserFile,
@@ -59,6 +60,7 @@ function submitUpload() {
     ElMessage.info("请登陆后在进行操作！");
   }
   uploadRef.value!.submit();
+
   request.post("/file/upload", fd).then((res) => {
     if (res.data.length !== 0) {
       ElMessage.success("上传成功！");

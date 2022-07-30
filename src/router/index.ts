@@ -38,14 +38,12 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  console.log("前置路由", to);
   nProgress.start();
   next();
 });
 
 router.afterEach((to, from, failure) => {
   nProgress.done();
-  console.log("后置路由", to);
 });
 
 export default router;

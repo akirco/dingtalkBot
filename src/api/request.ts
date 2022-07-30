@@ -1,4 +1,7 @@
 import axios from "axios";
+import { ElMessage } from "element-plus";
+import "nprogress/nprogress.css";
+import nProgress from "nprogress";
 import type {
   AxiosInstance,
   AxiosRequestConfig,
@@ -11,6 +14,10 @@ import {
   type instanceObject,
   formatJsonToUrlParams,
 } from "./type";
+nProgress.configure({
+  showSpinner: true,
+});
+
 const BASE_PREFIX = import.meta.env.VITE_API_BASEURL;
 
 class Request {
@@ -25,8 +32,9 @@ class Request {
     this.instance = axios.create(cfg);
     this.instance.interceptors.request.use(
       (config: AxiosRequestConfig) => {
+        nProgress.start();
         const token = localStorage.getItem("token") as string;
-        config.headers!["Authorization"] = "Bearer " + token;
+        config.headers!["Authorization"] = token;
         return config;
       },
       (error: AxiosError) => {
@@ -36,6 +44,7 @@ class Request {
     this.instance.interceptors.response.use(
       (response: AxiosResponse) => {
         if (response.status === 200) {
+          nProgress.done();
           return response.data;
         }
         ElMessage.info(JSON.stringify(response.status));
