@@ -1,9 +1,9 @@
-﻿const { excuteSqlConn } = require("../utils/sql");
+﻿const { excuteSql } = require("../utils/sql");
 const ChatBot = require("dingtalk-robot-sender");
 
 //查询bot信息
 async function getBots(callback) {
-  const bots = await excuteSqlConn(
+  const bots = await excuteSql(
     `select * from bot,jobs where bot.botId=jobs.botId and jobs.complete=0;`
   );
   callback(bots);
@@ -31,7 +31,7 @@ async function createBot(bot) {
 }
 //更改任务状态
 async function changeStatus() {
-  await excuteSqlConn(`update jobs set complete=1 where botId is not null;`);
+  await excuteSql(`update jobs set complete=1 where botId is not null;`);
 }
 
 //发送文本消息
@@ -61,7 +61,7 @@ async function sendMarkdown(title, robot, bot) {
       let currentImg = `img${index}`;
       if (bot[currentImg] !== "") {
         let rawMarkdown =
-          "![](http:localhost:4000/static/" + bot[currentImg] + ")";
+          "![](http:localhost:4000/" + bot[currentImg] + ")";
         await robot.markdown(title, rawMarkdown, {}).then(() => {
           console.log("Markdown发送成功！");
         });

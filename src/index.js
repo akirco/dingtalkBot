@@ -2,8 +2,6 @@ const Koa = require("koa");
 const Router = require("@koa/router");
 const bodyParser = require("koa-bodyparser");
 const cors = require("koa2-cors");
-const serve = require("koa-staticfiles");
-const koajwt = require("koa-jwt");
 const schedule = require("node-schedule");
 const shell = require("shelljs");
 const { APP_PORT } = require("./config/default");
@@ -20,33 +18,17 @@ app.use(bodyParser());
 app.use(cors());
 app.use(router.routes());
 app.use(router.allowedMethods());
-app.use(serve("./public/upload", { prefix: "/static" }));
-
+app.use(require('koa-static')(__dirname + '/public/dist/'))
+app.use(require('koa-static')(__dirname + '/public/upload/'))
 //! 错误处理
-app.use(async (ctx, next) => {
-  try {
-    return await next();
-  } catch (err) {
-    if (err.status === 401) {
-      ctx.status = 401;
-      ctx.body = `Protected resource,use Authorization header to get access\n`;
-    } else {
-      throw err;
-    }
-  }
-});
-//! jwt校验
-app.use(
-  koajwt({ secret: "RHhJsX22NXiwfYJ" }).unless({
-    path: [/\/api\/user\/login/],
-  })
-);
 
 //! extra router
 app.use(botRouter.routes(), botRouter.allowedMethods());
 app.use(userRouter.routes(), userRouter.allowedMethods());
 app.use(jobsRouter.routes(), jobsRouter.allowedMethods());
 app.use(uploadRouter.routes(), uploadRouter.allowedMethods());
+
+
 
 // ! return home page
 router
@@ -56,7 +38,8 @@ router
   .get("/api/admin/all", selectAll);
 
 //! schedule tasks
-schedule.scheduleJob("0 59 6 ? * * ", () => {
+schedule.scheduleJob("0 0 10,14,16 * * ? ", () => {
+  console.log("执行了！");
   shell.exec("node ./src/tasks/main.js");
 });
 
