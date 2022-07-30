@@ -42,6 +42,8 @@ onBeforeMount(() => {
     request.get("/bot/query", { params: { uid } }).then((res) => {
       bot.value.list = res.data;
     });
+  } else {
+    bot.value.list = [];
   }
 });
 // 操作按钮

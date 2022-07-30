@@ -56,7 +56,7 @@ function saveSubmit(e: Event) {
 function submitUpload() {
   const token = localStorage.getItem("token");
   if (!token) {
-    ElMessage.warning("请登陆后在进行操作！");
+    ElMessage.info("请登陆后在进行操作！");
   }
   uploadRef.value!.submit();
   request.post("/file/upload", fd).then((res) => {

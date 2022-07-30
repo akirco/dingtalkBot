@@ -16,17 +16,12 @@ function logout(e: Event) {
 }
 
 onBeforeMount(() => {
-  console.log("挂载前");
   const TOKEN = localStorage.getItem("token");
-  if (TOKEN) {
-    console.log("已登录");
+  if (TOKEN !== null) {
     isLogin.value = true;
   } else {
     isLogin.value = false;
   }
-});
-onBeforeUnmount(() => {
-  console.log("卸载前");
 });
 </script>
 <template>

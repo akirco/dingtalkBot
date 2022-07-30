@@ -26,7 +26,7 @@ class Request {
     this.instance.interceptors.request.use(
       (config: AxiosRequestConfig) => {
         const token = localStorage.getItem("token") as string;
-        config.headers!["Authorization"] = token;
+        config.headers!["Authorization"] = "Bearer " + token;
         return config;
       },
       (error: AxiosError) => {

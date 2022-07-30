@@ -24,7 +24,9 @@ export const useJobsStore = defineStore("jobs", () => {
   });
   async function insertJobs(jobInfo: JobsInfo) {
     const result = await requset.post("/jobs/insert", jobInfo);
-    if (result.code === 200) {
+    if (result.code === 400) {
+      ElMessage.info("请填写信息");
+    } else if (result.code === 200) {
       ElMessage.success("新增任务完成！去绑定机器人吧！");
     }
   }

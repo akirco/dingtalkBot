@@ -21,16 +21,18 @@ export const useUserStore = defineStore(
     });
 
     async function login({ uname, pwd }: userInfo) {
-      try {
-        const userInfo = await requset.post("/user/login", { uname, pwd });
+      const userInfo = await requset.post("/user/login", { uname, pwd });
+      if (userInfo.code === 500) {
+        ElMessage.info("服务端异常，请联系开发者！");
+      } else if (userInfo.code === 404) {
+        ElMessage.warning("用户名或密码为空！");
+      } else {
         localStorage.setItem("token", userInfo.data.token as string);
         localStorage.setItem("uid", userInfo.data.data.uid);
         ElMessage.success("登录成功!");
         isLogin.value = true;
         LoginInfo.uid = userInfo.data.data.uid;
         LoginInfo.isAdmin = userInfo.data.data.isAdmin;
-      } catch (error) {
-        ElMessage.error("请检查用户名或密码是否正确！");
       }
     }
     function logout() {
