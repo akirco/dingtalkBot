@@ -1,5 +1,5 @@
-﻿const { excuteSqlConn } = require('../utils/sql');
-const ChatBot = require('dingtalk-robot-sender');
+﻿const { excuteSqlConn } = require("../utils/sql");
+const ChatBot = require("dingtalk-robot-sender");
 
 //查询bot信息
 async function getBots(callback) {
@@ -25,24 +25,29 @@ async function createBot(bot) {
     return;
   }
   const robot = new ChatBot(bot);
-  await sendMarkdown('每日早报', robot, bot);
+  await sendMarkdown("每日早报", robot, bot);
   await sendText(robot, bot);
+  await changeStatus();
+}
+//更改任务状态
+async function changeStatus() {
+  await excuteSqlConn(`update jobs set complete=1 where botId is not null;`);
 }
 
 //发送文本消息
 async function sendText(robot, bot) {
   for (let key in bot) {
-    if (key.startsWith('txt')) {
-      let index = key.replace(/[^0-9]/gi, '');
+    if (key.startsWith("txt")) {
+      let index = key.replace(/[^0-9]/gi, "");
       let currentTxt = `txt${index}`;
       const textContent = {
-        msgtype: 'text',
+        msgtype: "text",
         text: {
           content: bot[currentTxt],
         },
       };
       await robot.send(textContent).then(() => {
-        console.log('文本发送成功了!');
+        console.log("文本发送成功了!");
       });
     }
   }
@@ -51,13 +56,14 @@ async function sendText(robot, bot) {
 //发送markdown消息
 async function sendMarkdown(title, robot, bot) {
   for (const key in bot) {
-    if (key.startsWith('img')) {
-      let index = key.replace(/[^0-9]/gi, '');
+    if (key.startsWith("img")) {
+      let index = key.replace(/[^0-9]/gi, "");
       let currentImg = `img${index}`;
-      if (bot[currentImg] !== '') {
-        let rawMarkdown = '![](http:localhost:4000/static/' + bot[currentImg] + ')';
+      if (bot[currentImg] !== "") {
+        let rawMarkdown =
+          "![](http:localhost:4000/static/" + bot[currentImg] + ")";
         await robot.markdown(title, rawMarkdown, {}).then(() => {
-          console.log('Markdown发送成功！');
+          console.log("Markdown发送成功！");
         });
       }
     }

@@ -19,7 +19,7 @@ class jobService {
       };
     }
   }
-  async jobSelectByUid(ctx,next){
+  async jobSelectByUid(ctx, next) {
     try {
       let _sql = `select * from jobs where uid=? and complete=0;`;
       let _values = [ctx.request.query.uid];
@@ -50,10 +50,17 @@ class jobService {
         ctx.request.body.txt1,
         ctx.request.body.txt2,
       ];
+      if (!_values[0] || !_values[1]) {
+        return (ctx.body = {
+          code: 400,
+          data: "数据为必填项！",
+          message: "error",
+        });
+      }
       const result = await excuteSql(_sql, _values);
       ctx.body = {
         msg: "insert success",
-        data: result.id,
+        data: result,
         code: 200,
       };
     } catch (error) {
@@ -66,12 +73,8 @@ class jobService {
   }
   async jobBindBotId(ctx, next) {
     try {
-      let _sql =
-        "update jobs set botId=? where id = ?;";
-      let _values = [
-        ctx.request.body.botId,
-        ctx.request.body.id,
-      ];
+      let _sql = "update jobs set botId=? where id = ?;";
+      let _values = [ctx.request.body.botId, ctx.request.body.id];
       const result = await excuteSql(_sql, _values);
       ctx.body = {
         msg: "update success",
