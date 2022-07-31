@@ -6,7 +6,11 @@ async function getBots(callback) {
   const bots = await excuteSql(
     `select * from bot,jobs where bot.botId=jobs.botId and jobs.complete=0;`
   );
-  callback(bots);
+  if(bots.length===0){
+    process.exit(0);
+  }else{
+    callback(bots);
+  }
 }
 getBots(setDingTalkBot);
 
