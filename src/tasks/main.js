@@ -1,4 +1,4 @@
-﻿const { excuteSql } = require("../utils/sql");
+const { excuteSql } = require("../utils/sql");
 const ChatBot = require("dingtalk-robot-sender");
 
 //查询bot信息
