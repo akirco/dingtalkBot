@@ -2,8 +2,8 @@ const Koa = require("koa");
 const Router = require("@koa/router");
 const bodyParser = require("koa-bodyparser");
 const cors = require("koa2-cors");
-const schedule = require("node-schedule");
-const shell = require("shelljs");
+// const schedule = require("node-schedule");
+// const shell = require("shelljs");
 const { APP_PORT } = require("./config/default");
 const botRouter = require("./router/bot.router");
 const userRouter = require("./router/user.router");
@@ -38,10 +38,10 @@ router
   .get("/api/admin/all", selectAll);
 
 //! schedule tasks
-schedule.scheduleJob("0 0 10,14,16 * * ? ", () => {
-  console.log("执行了！");
-  shell.exec("node ./src/tasks/main.js");
-});
+// schedule.scheduleJob("0 0 10,14,16 * * ? ", () => {
+//   console.log("执行了！");
+//   shell.exec("node ./src/tasks/main.js");
+// });
 
 //!listen port
 app.listen(APP_PORT);
